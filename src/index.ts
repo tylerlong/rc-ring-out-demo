@@ -1,4 +1,5 @@
 import RingCentral from '@rc-ex/core';
+import waitFor from 'wait-for-async';
 
 const rc = new RingCentral({
   server: process.env.RINGCENTRAL_SERVER_URL,
@@ -12,7 +13,23 @@ const main = async () => {
     extension: process.env.RINGCENTRAL_EXTENSION,
     password: process.env.RINGCENTRAL_PASSWORD!,
   });
-  console.log(rc.token?.access_token);
+
+  const r = await rc
+    .restapi()
+    .account()
+    .extension()
+    .ringOut()
+    .post({
+      from: {
+        phoneNumber: process.env.RINGCENTRAL_FROM_NUMBER,
+      },
+      to: {
+        phoneNumber: process.env.RINGCENTRAL_TO_NUMBER,
+      },
+    });
+  console.log(JSON.stringify(r, null, 2));
+
+  await waitFor({interval: 1000000});
   await rc.revoke();
 };
 
