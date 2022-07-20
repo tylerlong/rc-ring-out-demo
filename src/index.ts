@@ -21,10 +21,13 @@ const main = async () => {
     .ringOut()
     .post({
       from: {
-        phoneNumber: process.env.RINGCENTRAL_FROM_NUMBER,
+        phoneNumber: process.env.RINGCENTRAL_FROM_NUMBER, // driver
       },
       to: {
-        phoneNumber: process.env.RINGCENTRAL_TO_NUMBER,
+        phoneNumber: process.env.RINGCENTRAL_TO_NUMBER, // customer
+      },
+      callerId: {
+        phoneNumber: process.env.RINGCENTRAL_DISPLAY_NUMBER, // number display to customer
       },
     });
   console.log(JSON.stringify(r, null, 2));
